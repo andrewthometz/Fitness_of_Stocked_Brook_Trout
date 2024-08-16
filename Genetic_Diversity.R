@@ -1,10 +1,17 @@
+# Load packages
 library(tidyverse)
 library(readxl)
 library(adegenet)
 library(poppr)
 library(remotes)
+library(hierfstat)
+
 #install_github("thierrygosselin/radiator")
 #library(radiator)
+
+######################################################################
+#### Estimate measures of genetic diversity and write as csv file ####
+######################################################################
 
 #### Read in data ####
 Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
@@ -13,9 +20,7 @@ Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_g
 
 Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
-  arrange(match(SampleID, rownames(Data_2111@tab))) #%>% 
-  #mutate(GD_groups = case_when(Cohort == "Wild" ~ "Wild",
-  #                             .default = Cohort_year))
+  arrange(match(SampleID, rownames(Data_2111@tab)))
 
 Samples_2111 %>% 
   count(Cohort_year)
@@ -30,10 +35,9 @@ Data_2111 <- popsub(Data_2111,
                                 "W_2021"))
 
 #### Calculate genetic diversity measures ####
-library(hierfstat)
-
 gd <- basic.stats(Data_2111)
 
+# Extract each measure of genetic diversity, clean it up, and bind them back together at the end
 H_expected <- as.data.frame.matrix(gd$Hs) %>% 
   as_tibble(rownames = "locus") %>% 
   pivot_longer(2:9,
@@ -71,7 +75,7 @@ Allelic_richness <- as.data.frame(allelic.richness(Data_2111)) %>%
   group_by(group) %>% 
   summarize("ar" = round(mean(ar), 3))
 
-
+# Create tibble to bring metadata into genetic diversity tibble
 cohorts_years <- Samples_2111 %>% 
   select(Cohort, Year, Cohort_year) %>% 
   distinct()
@@ -88,58 +92,5 @@ GD_tibble <- bind_cols(H_expected$pop,
          "Fis" = 5) %>% 
   left_join(cohorts_years)
 
+# Write as csv
 write_csv(GD_tibble, "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Genetic_diversity/Diversity_2111.csv")
-
-#############################################
-#### Table of offspring per group and Ho ####
-
-#### Read in BestConfig files #### (manually cleaned them up in notepad++)
-config_2019 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
-  select(-ClusterIndex)
-
-config_2020 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2021/cleaned_up.BestConfig_Ordered") %>% 
-  select(-ClusterIndex)
-
-config_2021 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
-  select(-ClusterIndex)
-
-# Bind them together to make tidy config df
-temp_wild <- Samples_2111 %>%
-  select(SampleID, Cohort, Year) %>%
-  filter(Cohort == "Wild") %>% 
-  rename(OffspringID = SampleID,
-         Offspring_cohort = Cohort,
-         Offspring_year = Year)
-
-temp_parents <- Samples_2111 %>%
-  select(SampleID, Cohort, Year) %>%
-  filter(Cohort != "Wild") %>% 
-  rename(ParentID = SampleID,
-         Parent_cohort = Cohort,
-         Parent_year = Year)
-
-config_all <- config_2019 %>% 
-  bind_rows(config_2020) %>% 
-  bind_rows(config_2021) %>% 
-  pivot_longer(cols = c(FatherID, MotherID), 
-               names_to = "Parent_type", 
-               values_to = "ParentID") %>% 
-  left_join(temp_parents) %>% 
-  left_join(temp_wild) %>% 
-  select(-Parent_type) %>% 
-  drop_na()
-#mutate(Parent_cohort = case_when(is.na(Parent_cohort) ~ "Unknown", .default = Parent_cohort))
-
-N_offspring <- config_all %>% 
-  group_by(Parent_cohort, Parent_year) %>% 
-  summarize(n_offspring = n_distinct(OffspringID)) %>% 
-  rename(Cohort = Parent_cohort,
-         Year = Parent_year)
-
-GD_offspring <- GD_tibble %>% 
-  select(-Cohort_year) %>% 
-  left_join(N_offspring) %>% 
-  select(Year, Cohort, n_offspring, Ar, Ho, He, Fis)
-
-write_csv(GD_offspring, "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Genetic_diversity/GD_n_offspring.csv")
-
