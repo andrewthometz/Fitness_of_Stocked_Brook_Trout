@@ -1,3 +1,4 @@
+# Load packages
 library(tidyverse)
 library(readxl)
 library(devtools)
@@ -5,13 +6,16 @@ library(devtools)
 library(mater)
 library(adegenet)
 
+####################################################################################
+#### Write script to produce necessary input files for COLONY simulation module ####
+####################################################################################
+
 #### Prepare mating matrix input file ####
 # Create breeding matrix
 matrix_1 <- brd.mat(moms = 50, dads = 50, lambda.low = 4, lambda.high = 4) # lambda of 4 = Poisson distribution?
 
 # Define the number of offspring produced by each mate pair
-matrix_1_offspring <- brd.mat.fitness(mat = matrix_1, min.fert = 250, max.fert = 900, type = "uniform")
-                                                  # This fecundity info is from McFadden (1961)
+matrix_1_offspring <- brd.mat.fitness(mat = matrix_1, min.fert = 250, max.fert = 900, type = "uniform") # I gathered this fecundity info from McFadden (1961)
 
 # To get basic stats of the matrix
 mat.stats(mat = matrix_1_offspring, id.col = FALSE)
@@ -51,16 +55,7 @@ Allele_counts <- nAll(Data_2111) %>%
   rownames_to_column(var = "Marker") %>% 
   as_tibble() %>% 
   rename("n_alleles" = ".") %>% 
-  pivot_wider(names_from = Marker, values_from = n_alleles) 
-
-# Average number of alleles per locus
-# nAll(Data_2111) %>% 
-#   as.data.frame() %>% 
-#   rownames_to_column(var = "Marker") %>% 
-#   as_tibble() %>% 
-#   rename("n_alleles" = ".") %>% 
-#   count(n_alleles) %>% 
-#   summarize(mean_alleles = mean(n_alleles))
+  pivot_wider(names_from = Marker, values_from = n_alleles)
 
 Marker_types %>%
   bind_rows(Allele_counts) %>% 
@@ -73,7 +68,7 @@ Marker_types %>%
               quote = FALSE,
               eol = "\n")
 
-#### Gather allele frequency data ####
+#### Gather allele frequency data in COLONY input format ####
 #library(PopGenReport)
 #library(poppr)
 
@@ -91,10 +86,10 @@ df <- allele.dist(Data_2111, mk.figures = FALSE)$frequency[[i]] %>%
 
   vector <- as.numeric(df[1,])
   
-  vector %>% write(file = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_pedigree_simulation/Allele_frequencies_new.txt",
+  vector %>% write(file = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_pedigree_simulation/Allele_frequencies.txt",
                    append = TRUE,
                    ncolumns = length(vector))
   
-  setTxtProgressBar(ProgressBar, i)
+  setTxtProgressBar(ProgressBar, i) # Produces progress bar to monitor loop's progress
 }
 close(ProgressBar)
