@@ -1,3 +1,4 @@
+# Load packages
 library(tidyverse)
 library(readxl)
 library(adegenet)
@@ -6,7 +7,9 @@ library(devtools)
 library(vegan)
 library(patchwork)
 
-#citation("vegan")
+#####################################################################
+#### Run pedigree accumulation analysis using COLONY output data ####
+#####################################################################
 
 #### Read in data ####
 Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
