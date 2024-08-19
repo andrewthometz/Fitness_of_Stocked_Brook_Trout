@@ -1,8 +1,13 @@
+# Load packages
 library(tidyverse)
 library(readxl)
 library(miscTools)
 
-#### Reading in 2111 metadata ####
+##################################################################
+#### Script to turn megasat genotype data into genepop format ####
+##################################################################
+
+#### Reading in metadata ####
 Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
   arrange(Cohort)
 
@@ -47,7 +52,7 @@ colnames(genotype_data_1) <- genotype_data_1 %>%
 genotype_data_1 <- genotype_data_1 %>% 
   select(SampleID, Cohort, matches(Final_loci$Locus))
 
-#### Correct names for each locus #### and filter by final loci
+#### Correct names for each locus and filter by final loci ####
 locus_names <- colnames(genotype_data_1) %>%
   as_tibble() %>%
   #mutate(Locus = str_replace_all(value, c("\\." = "_", "-" = "_")), .keep = "unused") %>% 
@@ -55,7 +60,7 @@ locus_names <- colnames(genotype_data_1) %>%
   rename("Locus" = value) %>% 
   filter(!str_detect(Locus, "_b"))
 
-#### Change MegaSat notation to be missing genepop calls (000) ####
+#### Change megasat notation to be missing genepop calls (000) ####
 genotype_data_2 <- genotype_data_1 %>%
   select(-c(1:2)) %>%
   mutate(across(everything(), ~replace(., . ==  0, "000")),
