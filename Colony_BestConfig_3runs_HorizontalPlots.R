@@ -1,3 +1,4 @@
+# Load packages
 library(tidyverse)
 library(readxl)
 library(adegenet)
@@ -8,6 +9,11 @@ library(devtools)
 library(patchwork)
 library(forcats)
 
+####################################################################################################
+#### Evaluate various measures of post-stocking fitness using the BestConfig output from COLONY ####
+####################################################################################################
+
+#### Read in the data ####
 Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
@@ -15,16 +21,6 @@ Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_g
 Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab)))
-
-nAll(Data_2111) %>% 
-  as.data.frame() %>% 
-  rownames_to_column(var = "Marker") %>% 
-  as_tibble() %>% 
-  rename("n_alleles" = ".") %>% 
-  count(n_alleles) %>% 
-  summarize(mean_alleles = mean(n_alleles),
-            max_alleles = max(n_alleles),
-            min_alleles = min(n_alleles))
 
 #### Read in BestConfig files #### (manually cleaned them up in notepad++)
 config_2019 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
@@ -111,7 +107,6 @@ Samples_revised <- Samples_2111 %>%
                                  SampleID %in% spawned_twice$ParentID ~ 2,
                                  SampleID %in% spawned_thrice$ParentID ~ 3))
 
-######################################################################
 #### Begin calculating relative survival and reproductive success ####
 
 # Bring in Mitro's catch data
@@ -175,7 +170,6 @@ RRS <- RRS %>%
          SI_RRS_scaled = round((SI_RRS / max(SI_RRS)), 3),
          Cohort = fct_relevel(Cohort, "F1", "Domestic", "F2"))
 
-######################################################
 #### Create plots for each value calculated above ####
 
 # Plot relative survival
@@ -333,7 +327,6 @@ ggsave(filename = "allplots_horizontal.png",
        width = 5,
        units = "in")
 
-######################################################
 #### Plot the number of offspring per parent fish ####
 
 # Create F1 df to order the bars in desc order then plot
@@ -442,7 +435,6 @@ ggsave(filename = "Wild_per_cohort3panel.png",
        width = 7,
        units = "in")
 
-#################################################################################
 #### Run calculation to find median number of offspring per parent by cohort ####
 
 # Isolate number of offspring per parent for each cohort
@@ -491,91 +483,5 @@ ggsave(filename = "Wild_per_cohort_boxplot.png",
        device = "png",
        path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
        height = 5,
-       width = 5,
-       units = "in")
-
-# Barplot ################## Unnecessary without unknown fish # Not using this single colony run
-barplot_df <- config_all %>%
-  group_by(ParentID) %>%
-  count() %>% 
-  left_join(temp_parents) %>% 
-  ungroup() %>% 
-  mutate(n_offspring = n,
-         Cohort = fct_relevel(Parent_cohort, c("F1", "F2", "Domestic")), .keep = "unused") %>% 
-  arrange(desc(n_offspring))
-
-barplot <- ggplot(barplot_df) +
-  geom_col(aes(x = ParentID, y = n_offspring, fill = Cohort)) +
-  labs(x = "Inferred parent fish",
-       y = bquote(N[offspring]),
-       fill = "Stocked\ngroup") +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,55),
-                     breaks = seq(0,55, by = 5)) +
-  scale_x_discrete(limits = c(barplot_df$ParentID)) +
-  scale_fill_manual(values = c("#1E88E5","#FFC107", "#D81B60")) +
-  theme_classic() +
-  theme(axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-ggsave(filename = "Wild_per_cohort_barplot.pdf",
-       plot = barplot,
-       device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_1_run",
-       height = 4,
-       width = 5,
-       units = "in")
-
-ggsave(filename = "Wild_per_cohort_barplot.png",
-       plot = barplot,
-       device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_1_run",
-       height = 4,
-       width = 5,
-       units = "in")
-
-#######################################################################
-#### Alternative plotting ideas ############### Not so many barplots...
-
-scatter_df <- config_all %>%
-  group_by(ParentID) %>%
-  count() %>% 
-  left_join(temp_parents) %>% 
-  ungroup() %>% 
-  mutate(n_offspring = n,
-         Cohort = fct_relevel(Parent_cohort, c("F1", "F2", "Domestic")), .keep = "unused") %>% 
-  arrange(desc(n_offspring))
-
-scatter_plot <- scatter_df %>% 
-  ggplot(aes(x = Parent_year, y = n_offspring)) +
-  geom_point(aes(color = Cohort),
-             position = position_jitter(h = 0, w = 0.15),
-             alpha = 0.5,
-             size = 1.5) +
-  scale_colour_manual(name = "Stocked group", # Can use this or scale_color_discrete()
-                      values = c("#1E88E5","#FFC107", "#D81B60")) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,55),
-                     breaks = seq(0,55, by = 5)) +
-  scale_x_continuous(breaks = seq(2018, 2020, by = 1)) +
-  labs(x = "Stocking year",
-       y = bquote(N[offspring])) +
-  coord_flip() +
-  theme_classic() +
-  theme(legend.position = "top")
-
-ggsave(filename = "parental_scatterplot.pdf",
-       plot = scatter_plot,
-       device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
-       height = 3,
-       width = 5.5,
-       units = "in")
-
-ggsave(filename = "parental_scatterplot.png",
-       plot = scatter_plot,
-       device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
-       height = 3,
        width = 5,
        units = "in")
