@@ -30,7 +30,7 @@ config_2020 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analys
 config_2021 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
-#### Function from Bobby ####
+#### Function to calculate Ns (number of successfully breeding adults) ####
 Ns_calc <- function(family){
   require(vegan)
   family$FatherID <- paste0("Dad", family$FatherID)
@@ -44,7 +44,7 @@ Ns_calc <- function(family){
   colnames(moms) <- unique(family$MotherID)
   rownames(moms) <- family$OffspringID
   
-  #loop to fill in matrix with parents
+  # Loop to fill in matrix with parents
   for (i in 1:length(family$OffspringID)) {
     off <- family[i,]
     dadn <- which(off$FatherID == colnames(dads))
@@ -85,7 +85,7 @@ Ns_2021_data <- tibble(y = Ns_2021[[1]]$richness,
                        y_sd = Ns_2021[[1]]$sd,
                        x = Ns_2021[[1]]$sites)
 
-#### Plot #### (jackknife commented out because untrustworthy)
+#### Plot for each year ####
 # 2020 Offspring
 Plot_2019 <- Ns_2019_data %>% 
   ggplot(aes(x = x, y = y)) +
