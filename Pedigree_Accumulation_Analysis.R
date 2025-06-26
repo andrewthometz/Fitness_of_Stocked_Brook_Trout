@@ -12,22 +12,22 @@ library(patchwork)
 #####################################################################
 
 #### Read in data ####
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab)))
 
 #### Read in BestConfig files #### (manually cleaned them up in notepad++)
-config_2019 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
+config_2019 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
-config_2020 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2021/cleaned_up.BestConfig_Ordered") %>% 
+config_2020 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2021/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
-config_2021 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
+config_2021 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
 #### Function to calculate Ns (number of successfully breeding adults) ####
@@ -158,7 +158,7 @@ all_plots <- Plot_2019 + Plot_2020 + Plot_2021
 ggsave(filename = "PAA_plots_all.pdf",
        plot = all_plots,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Pedigree_accum_3runs",
+       path = "X:/filepath.../Polished_plots_figures/Pedigree_accum_3runs",
        height = 4,
        width = 9,
        units = "in")
@@ -166,7 +166,7 @@ ggsave(filename = "PAA_plots_all.pdf",
 ggsave(filename = "PAA_plots_all.png",
        plot = all_plots,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Pedigree_accum_3runs",
+       path = "X:/filepath.../Polished_plots_figures/Pedigree_accum_3runs",
        height = 4,
        width = 9,
        units = "in")
