@@ -26,22 +26,22 @@ length_dist_tidy <- function(x){
 }
 
 #### Read in 12 random fish (Grabbed largest few files from each cat folder. Used some from each folder to get "even" representation) ####
-BKT_21_08632 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08632.txt")
-BKT_21_08633 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08633.txt")
-BKT_21_08624 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08624.txt")
+BKT_21_08632 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08632.txt")
+BKT_21_08633 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08633.txt")
+BKT_21_08624 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_1of5_output/length_distribution/Genotype_21-08624.txt")
 
-BKT_21_09151 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09151.txt")
-BKT_21_09203 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09203.txt")
-BKT_21_09148 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09148.txt")
+BKT_21_09151 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09151.txt")
+BKT_21_09203 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09203.txt")
+BKT_21_09148 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_2of5_output/length_distribution/Genotype_21-09148.txt")
 
-BKT_21_09303 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_3of5_output/length_distribution/Genotype_21-09303.txt")
-BKT_21_09425 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_3of5_output/length_distribution/Genotype_21-09425.txt")
+BKT_21_09303 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_3of5_output/length_distribution/Genotype_21-09303.txt")
+BKT_21_09425 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_3of5_output/length_distribution/Genotype_21-09425.txt")
 
-BKT_22_11471 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_4of5_output/length_distribution/Genotype_22-11471.txt")
-BKT_22_11380 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_4of5_output/length_distribution/Genotype_22-11380.txt")
+BKT_22_11471 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_4of5_output/length_distribution/Genotype_22-11471.txt")
+BKT_22_11380 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_4of5_output/length_distribution/Genotype_22-11380.txt")
 
-BKT_22_11777 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_5of5_output/length_distribution/Genotype_22-11777.txt")
-BKT_22_11658 <- read_delim("X:/2111_F1F2D_BKT/MEGAsat_outputs/MEGAsat_2111_cat_5of5_output/length_distribution/Genotype_22-11658.txt")
+BKT_22_11777 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_5of5_output/length_distribution/Genotype_22-11777.txt")
+BKT_22_11658 <- read_delim("X:/filepath.../MEGAsat_outputs/MEGAsat_2111_cat_5of5_output/length_distribution/Genotype_22-11658.txt")
 
 #### Run each fish's length_dist file through my tidying function while joining them ####
 All_LD_data <- bind_rows(length_dist_tidy(BKT_21_08632),
@@ -80,7 +80,7 @@ All_LD_data %>%
 #### Create loop to produce peak morphology plots, one locus and 12 fish per page. Save directly as pdf ####
 # Beware, this takes about 40 minutes to run #
 
-pdf("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_PeakMorph_Thometz.pdf", paper = "a4r", width = 11, height = 9)
+pdf("X:/filepath.../2111_PeakMorph_Thometz.pdf", paper = "a4r", width = 11, height = 9)
 
 ProgressBar <- txtProgressBar(min = 0, max = 91, style = 3)
 
