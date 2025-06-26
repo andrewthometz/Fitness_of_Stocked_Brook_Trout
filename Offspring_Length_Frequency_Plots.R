@@ -13,7 +13,7 @@ library(patchwork)
 # For example, wild offspring captured in 2020 are in the W_2019 cohort because the natural reproduction would have occured in Fall of 2019
 
 # Read in metadata
-Offspring_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Offspring_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   filter(Cohort_year == "W_2019" |
          Cohort_year == "W_2020" |
          Cohort_year == "W_2021") %>% 
@@ -99,7 +99,7 @@ length_freqs <- plot_2019 + plot_2020 + plot_2021
 ggsave(filename = "Wild_length_frequencies.pdf",
        plot = length_freqs,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 4,
        width = 10,
        units = "in")
