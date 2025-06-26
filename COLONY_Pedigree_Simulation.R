@@ -33,14 +33,14 @@ subsample_matrix <- ped2mat(ped = pedigree_1)
 mat.stats(mat = subsample_matrix)
 
 subsample_matrix %>% 
-write.table("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_pedigree_simulation/Mating_matrix.txt", 
+write.table("X:/filepath.../Colony_pedigree_simulation/Mating_matrix.txt", 
             #sep = "\t", 
             row.names = FALSE, 
             col.names = FALSE)
 
 #### Create marker input file ####
 # Read in genind file
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
@@ -61,7 +61,7 @@ Marker_types %>%
   bind_rows(Allele_counts) %>% 
   bind_rows_0(Allelic_dropout) %>% 
   bind_rows_0(False_allele) %>% 
-  write.table("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_pedigree_simulation/Marker_input.txt", 
+  write.table("X:/filepath.../Colony_pedigree_simulation/Marker_input.txt", 
               #sep = "\t", 
               row.names = FALSE, 
               col.names = TRUE,
@@ -86,7 +86,7 @@ df <- allele.dist(Data_2111, mk.figures = FALSE)$frequency[[i]] %>%
 
   vector <- as.numeric(df[1,])
   
-  vector %>% write(file = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_pedigree_simulation/Allele_frequencies.txt",
+  vector %>% write(file = "X:/filepath.../Colony_pedigree_simulation/Allele_frequencies.txt",
                    append = TRUE,
                    ncolumns = length(vector))
   
