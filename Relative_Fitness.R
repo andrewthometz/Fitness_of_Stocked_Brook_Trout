@@ -14,22 +14,22 @@ library(forcats)
 ####################################################################################################
 
 #### Read in the data ####
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab)))
 
 #### Read in BestConfig files #### (manually cleaned them up in notepad++)
-config_2019 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
+config_2019 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2020/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
-config_2020 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2021/cleaned_up.BestConfig_Ordered") %>% 
+config_2020 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2021/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
-config_2021 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
+config_2021 <- read_delim("X:/filepath.../Colony_3_runs/Output_files/2022/cleaned_up.BestConfig_Ordered") %>% 
   select(-ClusterIndex)
 
 # Bind them together to make tidy config df
@@ -110,7 +110,7 @@ Samples_revised <- Samples_2111 %>%
 #### Begin calculating relative survival and reproductive success ####
 
 # Bring in Mitro's catch data
-Mitro_catch <- read_excel("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Offspring_catch_data.xlsx") 
+Mitro_catch <- read_excel("X:/filepath.../Offspring_catch_data.xlsx") 
 
 # RELATIVE SURVIVAL: relative survival proportions
 Survival <- Mitro_catch %>% 
@@ -314,7 +314,7 @@ all_plots <- RS_plot / RRS_plot / poly_RRS_plot / SI_RRS_plot
 ggsave(filename = "allplots_horizontal.pdf",
        plot = all_plots,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 6,
        width = 5,
        units = "in")
@@ -322,7 +322,7 @@ ggsave(filename = "allplots_horizontal.pdf",
 ggsave(filename = "allplots_horizontal.png",
        plot = all_plots,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 6,
        width = 5,
        units = "in")
@@ -422,7 +422,7 @@ wild_per_cohort_plot <- wild_per_F1_plot + wild_per_F2_plot + wild_per_D_plot #+
 ggsave(filename = "Wild_per_cohort3panel.pdf",
        plot = wild_per_cohort_plot,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 3,
        width = 7,
        units = "in")
@@ -430,7 +430,7 @@ ggsave(filename = "Wild_per_cohort3panel.pdf",
 ggsave(filename = "Wild_per_cohort3panel.png",
        plot = wild_per_cohort_plot,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 3,
        width = 7,
        units = "in")
@@ -473,7 +473,7 @@ boxplot <- Wild_per_parent %>%
 ggsave(filename = "Wild_per_cohort_boxplot.pdf",
        plot = boxplot,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 5,
        width = 5,
        units = "in")
@@ -481,7 +481,7 @@ ggsave(filename = "Wild_per_cohort_boxplot.pdf",
 ggsave(filename = "Wild_per_cohort_boxplot.png",
        plot = boxplot,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/Colony_3_runs",
+       path = "X:/filepath.../Polished_plots_figures/Colony_3_runs",
        height = 5,
        width = 5,
        units = "in")
