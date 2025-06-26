@@ -15,12 +15,12 @@ library(ggrepel)
 # n.pca must be =< k-1 (only k-1 PCs are biologically informative)
 
 #### Read in genetic data ####
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
 #### Read in metadata ####
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab))) %>% 
   mutate(WaterbodyName = case_when(str_detect(WaterbodyName, "St. Croix") ~ "St. Croix",
@@ -78,7 +78,7 @@ reassignment_plot <- summary(DAPC_stocked)$assign.per.pop %>%
 ggsave(filename = "reassignment_plot.pdf",
        plot = reassignment_plot,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 4,
        width = 6,
        units = "in")
@@ -86,7 +86,7 @@ ggsave(filename = "reassignment_plot.pdf",
 ggsave(filename = "reassignment_plot.png",
        plot = reassignment_plot,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures/",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 4,
        width = 6,
        units = "in")
@@ -132,7 +132,7 @@ Ass_prob_plot <- Assignment_probs %>%
 ggsave(filename = "DAPC_ass_prob_plot.pdf",
        plot = Ass_prob_plot,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 5,
        width = 8,
        units = "in")
@@ -140,7 +140,7 @@ ggsave(filename = "DAPC_ass_prob_plot.pdf",
 ggsave(filename = "DAPC_ass_prob_plot.png",
        plot = Ass_prob_plot,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 5,
        width = 8,
        units = "in")
@@ -225,7 +225,7 @@ DAPC_ord_plot <- stocked_data_points %>%
 ggsave(filename = "DAPC_ord_by_cohort.pdf",
        plot = DAPC_ord_plot,
        device = "pdf",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 5,
        width = 8,
        units = "in")
@@ -233,7 +233,7 @@ ggsave(filename = "DAPC_ord_by_cohort.pdf",
 ggsave(filename = "DAPC_ord_by_cohort.png",
        plot = DAPC_ord_plot,
        device = "png",
-       path = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Polished_plots_figures",
+       path = "X:/filepath.../Polished_plots_figures",
        height = 5,
        width = 8,
        units = "in")
