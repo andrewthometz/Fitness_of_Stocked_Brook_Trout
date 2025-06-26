@@ -14,11 +14,11 @@ library(hierfstat)
 ######################################################################
 
 #### Read in data ####
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab)))
 
@@ -93,4 +93,4 @@ GD_tibble <- bind_cols(H_expected$pop,
   left_join(cohorts_years)
 
 # Write as csv
-write_csv(GD_tibble, "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Genetic_diversity/Diversity_2111.csv")
+write_csv(GD_tibble, "X:/filepath.../Genetic_diversity/Diversity_2111.csv")
