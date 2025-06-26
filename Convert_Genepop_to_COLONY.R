@@ -18,12 +18,12 @@ library(MCGLfxns)
 ###################################################################################
 
 #### Read in genetic data ####
-Data_2111 <- read.genepop("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen", 
+Data_2111 <- read.genepop("X:/filepath.../2111_genepop.gen", 
                           ncode = 3L, 
                           quiet = FALSE)
 
 #### Read in metadata ####
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   arrange(Cohort) %>% 
   filter(SampleID %in% rownames(Data_2111@tab)) %>% 
   arrange(match(SampleID, rownames(Data_2111@tab)))
@@ -41,7 +41,7 @@ W_2020 <- popsub(Data_2111, sublist = c("W_2020",
                                         "F2_2018")) %>% 
   tidy_genind()
 
-write_colony(W_2020, filename = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Input_files/Wild_2020_input.colony")
+write_colony(W_2020, filename = "X:/filepath.../Colony_3_runs/Input_files/Wild_2020_input.colony")
 
 # Write COLONY file for 2021 wild offspring, only including possible parents groups
 W_2021 <- popsub(Data_2111, sublist = c("W_2021", 
@@ -54,7 +54,7 @@ W_2021 <- popsub(Data_2111, sublist = c("W_2021",
                                         )) %>% 
   tidy_genind()
 
-write_colony(W_2021, filename = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Input_files/Wild_2021_input.colony")
+write_colony(W_2021, filename = "X:/filepath.../Colony_3_runs/Input_files/Wild_2021_input.colony")
 
 # Write COLONY file for 2022 wild offspring, only including possible parents groups
 W_2022 <- popsub(Data_2111, sublist = c("W_2022",
@@ -69,7 +69,7 @@ W_2022 <- popsub(Data_2111, sublist = c("W_2022",
                                         "F2_2020")) %>% 
   tidy_genind()
 
-write_colony(W_2022, filename = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Analyses/Colony_3_runs/Input_files/Wild_2022_input.colony")
+write_colony(W_2022, filename = "X:/filepath.../Colony_3_runs/Input_files/Wild_2022_input.colony")
 
 #### Likelihood of parentage for W_2020 cohort ####
 Total_n_stocked <- 3 * 500 * 1  # 3 groups, 500 fish each, 1 year
