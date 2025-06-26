@@ -8,13 +8,13 @@ library(miscTools)
 ##################################################################
 
 #### Reading in metadata ####
-Samples_2111 <- read_delim("X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/Samples_2111.csv") %>% 
+Samples_2111 <- read_delim("X:/filepath.../Samples_2111.csv") %>% 
   arrange(Cohort)
 
 Samples_2111 %>% count(Cohort)
 
 #### Final locus selections ####
-Locus_data <- read_excel("X:/2111_F1F2D_BKT/BKT_Locus_Evaluation.xlsx") %>% 
+Locus_data <- read_excel("X:/filepath.../BKT_Locus_Evaluation.xlsx") %>% 
   select(1:9)
 
 hwe_cutoff <- 0.15
@@ -29,12 +29,12 @@ Final_loci <- Locus_data %>%
   select(Locus)
 
 #### Read in genotypes, merge with sample data, organize by population, remove negative controls ####
-genotype_2111 <- read_excel("X:/2111_F1F2D_BKT/MEGAsat_outputs/Genotype_2111_SP.xlsx", 
+genotype_2111 <- read_excel("X:/filepath.../MEGAsat_outputs/Genotype_2111_SP.xlsx", 
                            col_types = "text") %>% 
   rename(SampleID = Sample_idx1_idx2)
 
 # Need genotype data from the 2111 fish in my 2205 sequence run
-genotype_2205 <- read_excel("X:/2205_BKT_feral_broodstock_ID/2205_MEGAsat_outputs/Genotype_2205.xlsx",
+genotype_2205 <- read_excel("X:/filepath.../2205_MEGAsat_outputs/Genotype_2205.xlsx",
                              col_types = "text") %>% 
   rename(SampleID = Sample_idx1_idx2)
 
@@ -123,7 +123,7 @@ genotype_matrix <- insertRow(genotype_matrix, 2, c(locus_names_2, rep("", ncol(g
 genotype_matrix <- insertRow(genotype_matrix, 3, pop_line)
 
 # Export file
-write.table(genotype_matrix, file = "X:/2111_F1F2D_BKT/2111analysis/Thometz_scripts/2111_genepop.gen",
+write.table(genotype_matrix, file = "X:/filepath.../2111_genepop.gen",
             quote = FALSE,
             col.names = FALSE,
             row.names = FALSE)
